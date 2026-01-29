@@ -1,0 +1,56 @@
+package Backtracking;
+
+import java.util.ArrayList;
+
+public class RatInMaze2 {
+    public static void paths(int[][] mat, int[][] ans, int r, int c, String path, ArrayList<String>ansPath){
+
+        int n = mat.length;
+        //base condition
+        if(r<0 || c<0 || r>=n || c>=n || mat[r][c]==0){
+            return;
+        }
+        mat[r][c] = 0;//make block
+        ans[r][c] = 1;//visited creating path
+
+        if(r==n-1 && c==n-1){
+            ansPath.add(path);
+            printMat(ans);
+        }else {
+            paths(mat, ans, r + 1, c, path + "D", ansPath);//Down
+            paths(mat, ans, r - 1, c, path + "U", ansPath);//Up
+            paths(mat, ans, r, c + 1, path + "R", ansPath);//Right
+            paths(mat, ans, r, c - 1, path + "L", ansPath);//Left
+        }
+
+        mat[r][c] = 1;
+        ans[r][c] = 0;
+    }
+
+    public static void printMat(int[][] ansMat){
+        System.out.println("------Answer metrics ------ ");
+        for (int i=0; i<ansMat.length; i++){
+            for (int j=0; j<ansMat.length; j++){
+                System.out.print(ansMat[i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String[] args) {
+        int[][] mat = {
+                {1, 0, 0, 0},
+                {1, 1, 0, 1},
+                {1, 1, 0, 0},
+                {0, 1, 1, 1}
+        };
+
+        int n = mat.length;
+        int[][] ansMat = new int[n][n];
+        ArrayList<String> list = new ArrayList<>();
+
+        paths(mat,ansMat,0,0,"",list);
+        System.out.println("All Paths : "+list);
+
+    }
+}
